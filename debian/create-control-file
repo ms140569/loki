@@ -1,0 +1,20 @@
+#!/bin/bash
+PKG_NAME="${1}"
+PKG_VERSION="${2}"
+DST_DIR="${PKG_NAME}_${PKG_VERSION}/DEBIAN"
+CONTROL_FILE="${DST_DIR}/control"
+
+mkdir -p "${DST_DIR}"
+
+cat >${CONTROL_FILE} <<EOF
+Package: ${PKG_NAME}
+Version: ${PKG_VERSION}
+Section: non-free/comm
+Priority: optional
+Architecture: all
+Depends: 
+Recommends: 
+Maintainer: Matthias Schmidt <matthias.schmidt@gmail.com>
+Description: Loki Password Manger stores passwords in AES256 encrypted files. 
+ These files are located in the users homedirectory.
+EOF

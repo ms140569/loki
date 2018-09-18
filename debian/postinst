@@ -1,0 +1,4 @@
+#!/bin/sh
+echo "Doing post-initialization stuff"
+
+exit 0

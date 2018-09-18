@@ -1,0 +1,35 @@
+Manual testing notebook.
+
+1. Without git
+
+   1.1 init -> Everything there? Generation? Which pw? Raise and verify Generation Delete
+   1.2 init, add a record, raise gen, copy on same level, raise gen, remove one, raise gen, Delete
+   1.3 init, add record in subdir, add another record in 2nd level sub dir. Copy firs, raise level, Delete
+   1.4 verify agent, start, stop, external kill, etc.
+   1.5 Editing: init, create record, edit inline, raise, edit with external, *cancel* editing, Delete
+   1.6 Moving: init, create in subdir, move file, move subdir
+   1.7 Importin with various files
+
+2. With git
+
+
+3. Copy/Move matrix:
+
+   3.1 Copy
+
+   param1    param2     outcome
+
+   file      file       normal copy with new name. If dst exists it gets overridden. Just like unix does it ;-)
+   file      dir        copies file *into* directoy
+   dir       file       ERROR: This should fail if dst file exits.
+   dir       dir        If dst dir exits copy *into* dir. If not copy using dst as name.
+
+   3.2 Move
+
+   param1    param2     outcome
+
+   file      file       simple move (rename) file to new location/name. ERROR if dst exists!
+   file      dir        Moves file *into* directory
+   dir       file       ERROR: This should fail if dst exits *and* is a file.
+   dir       dir        If dst dir exists, move *into* dir, outherwise rename.
+

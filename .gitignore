@@ -1,0 +1,11 @@
+storage/storage.pb.go
+storage/master.pb.go
+.vscode/
+debug
+loki
+
+bin/
+*.deb
+loki_*
+config/version.go
+loki.1.gz

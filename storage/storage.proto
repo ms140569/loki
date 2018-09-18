@@ -1,0 +1,12 @@
+syntax = "proto3";
+package storage;
+
+message Record {
+    string magic = 1;
+    string md5 = 2;
+    string title = 3;
+    string account = 4;
+    string password = 5;
+    string url = 6;
+    string notes = 7;
+}

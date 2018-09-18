@@ -1,0 +1,9 @@
+* Blind mode: do not show passwords, but ****
+* Copy password to clipboard
+* Manpage
+* How to keep track of created and changed timestamps? -> done by git
+* Bash programmable completion on contents as well
+- Enable git diff. See pass.
+* debian package
+* mac installer
+

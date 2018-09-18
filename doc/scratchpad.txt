@@ -1,0 +1,82 @@
+Datafile format (Big endian)
+
+Magic    : 4c 4f 4b 49     :  4 : "LOKI" Magic Header
+Version  : 00 00 00 01     :  4 : v1 - Protocol/Format version
+Counter  : 00 00 00 17     :  4 : Version number of Masterpassword
+Size     : 00 00 00 00     :  4 : Size of encrypted payload
+MD5 Hash : 16 Bytes        : 16 : md5sum of encrypted payload
+
+
+Data     : .........       : Variable-sized encrypted payload
+
+out_file = open('datafile.loki', 'wb')
+header = bytearray(b'\x4c\x4F\x4b\x49')
+out_file.write(header)
+version = bytearray(b'\x00\x00\x00\x01')
+out_file.write(version)
+counter = bytearray(b'\x00\x00\x00\x17')
+out_file.write(counter)
+size = bytearray(b'\x00\x00\x00\x0F')
+out_file.write(size)
+md5 = bytearray(b'\x00\x00\x00\x0F\x00\x00\x00\x0F\x00\x00\x00\x0F\x00\x00\x00\x0F')
+out_file.write(md5)
+data = bytearray(b'\x01\x02\x03\x04\x05\x06\x07\x08\x09\x10\x11\x12\x13\x14\x15\x16')
+out_file.write(data)
+out_file.close()
+
+
+md5sum -b matthias.raw
+a73a018471abf246e4cbf0ad23fa5ea1 *matthias.raw
+
+#                   a7  3a  01  84  71  ab  f2  46  e4  cb  f0  ad  23  fa  5e  a1 *mattias.raw
+md5 = bytearray(b'\xa7\x3a\x01\x84\x71\xab\xf2\x46\xe4\xcb\xf0\xad\x23\xfa\x5e\xa1')
+
+
+out_file = open('sixteen_as_int.raw', 'wb')
+data = bytearray(b'\x00\x00\x00\x10')
+out_file.write(data)
+out_file.close()
+
+
+cat header.raw null-null-null-eins.raw null-null-null-two.raw sixteen_as_int.raw md5_for_matthias.raw matthias.raw  >matthias.loki
+
+# Will this work?
+dlv debug loki -- show data/tree/valid.loki
+
+echo -n req | nc -U /tmp/loki.sock |hex
+echo -n 12345678901234567890123456789012 |bin/loki-agentd
+
+
+To install protobuffers:
+
+- brew install protobuf
+- go get -u github.com/golang/protobuf/protoc-gen-go
+
+
+golang.org/x/crypto/argon2
+golang.org/x/crypto/ssh/terminal
+
+make clean && make build && bin/loki ls
+
+
+---------------------------------------------------------
+Manpages:
+
+Display Manpage:
+
+Linux:
+
+man -l man/loki.troff
+man -l man/loki.1
+man -l man/loki.1.gz
+
+Mac OS-X: Remove the -l flag!
+
+http://www.eddieantonio.ca/blog/2015/12/18/authoring-manpages-in-markdown-with-pandoc/
+
+pandoc --standalone --to man loki.1.md -o loki.1
+
+
+
+
+
