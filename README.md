@@ -2,11 +2,12 @@
 
 **Introduction**
 
-The Loki Password Manager manages passwords/credentials in an comfortable but secure manner. It is highly influence by the Password Store [pass](https://www.passwordstore.org/ "pass") written by Jason A. Donenfeld. The credential data is stored in separate files (with suffix .loki), structured in a directory-tree which contain the following fields:
+The Loki Password Manager manages passwords/credentials in an comfortable but secure manner. It is highly influenced by the Password Store [pass](https://www.passwordstore.org/ "pass") written by Jason A. Donenfeld. The credential data is stored in separate files (with suffix .loki), structured in a directory-tree which contain the following fields:
 
 * Title (String)
 * Account (String)
 * Password (String)
+* Tags (String Array)
 * Url (String)
 * Notes (Multiline String)
 
@@ -16,17 +17,18 @@ _Example:_
 Title       : Amazon
 Account     : example@mail.com
 Password    : secret
+Tags        : web, imported, shopping
 Url         : https://www.amazon.de
 
 -------------------------------------------
 This is my private Amazon shopping account.
 ```
-The individual files are encrypted with the AES-256 algorithm. The store is usually located in the users Homedirectory ($HOME/.loki). Besides the datafiles are two special files:
+The individual files are encrypted with the AES-256 algorithm. The store is usually located in the users homedirectory ($HOME/.loki). Besides the datafiles there are two special files:
 
 * .config - Human-editable configuration file (analog to the flags)
 * .master - This file keeps track of active generation ( version of master password)
 
-To save the user from authenticate against the store multiple times, the program creates once sucessfully authenticated a daemon process (loki-agentd) which buffers the key in memory. This behavior is similar to the ssh-agent. Subsequent invocations of the loki command fetch the authentification key via unix domain socket from the agent.
+To save the user from authenticate against the store multiple times, the program creates (once sucessfully authenticated) a daemon process (loki-agentd) which buffers the key in memory. This behavior is similar to the ssh-agent. Subsequent invocations of the loki command fetch the authentification key via unix domain socket from the agent.
 
 **Installation**
 
@@ -53,7 +55,6 @@ whereas the subcommand could be one of:
 * ls | list - Lists the password store in a treelike fashion.
 * init - Initialize a new password store.
 * login | pw | pass - Authenticate against password store.
-* version | ver - Shows version information.
 * remove | rm | del - Delete a Record.
 * change - Changes the masterpassword in all files.
 * help - Shows general help information.
@@ -83,7 +84,7 @@ The valid _flags_ are:
 **Examples**
 ```
 $ loki
-Loki Password Manager, ver 1.0.0, data: /home/mattschmidt/.loki
+Loki Password Manager, ver 1.0.0, data: /home/schmidtm/.loki
 
 .
 ├── frumpy
@@ -130,9 +131,10 @@ message Record {
     string title = 3;
     string account = 4;
     string password = 5;
-    string url = 6;
-    string notes = 7;
-}
+    repeated string tags = 6;
+    string url = 7;
+    string notes = 8;
+}    
 ```
 **Git Integration**
 
@@ -142,7 +144,7 @@ Working on different parts of the directory tree leads to changes on individual 
 
 If working on separate files and directories of the data-tree no merge conflicts should occur, but there is one case, where special care is needed:
 
-Changing the Masterpassword (with the _change_ command) changes every file in the tree, should be done only in **one single operation** and **could not** merge with other, normal operations!
+Changing the Masterpassword (with the _change_ command) changes every file in the tree. This should be done only in **one single operation** and **could not** merge with other, normal operations!
 
 If the password store was created using the -g flag, the _.config_ file in the password store will remember this and keep the _Gitmode_ turned on for the store:
 
