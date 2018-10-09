@@ -7,7 +7,7 @@ import (
 )
 
 func TestCommandShow(t *testing.T) {
-	t.Skip("skipping test for now, further investigation needed")
+	// t.Skip("skipping test for now, further investigation needed")
 	defer SetupTest(t)()
 	err := Show(cfg, cmd, "file1")
 
@@ -18,7 +18,7 @@ func TestCommandShow(t *testing.T) {
 }
 
 func TestCommandShow2(t *testing.T) {
-	t.Skip("skipping test for now, further investigation needed")
+	// t.Skip("skipping test for now, further investigation needed")
 	defer SetupTest(t)()
 	err := Show(cfg, cmd, "dir3/sub/bingo.loki")
 

@@ -109,9 +109,6 @@ func CheckBase(cfg config.Configuration) bool {
 // .master and .config file.
 func InitBasedir(cfg config.Configuration) error {
 
-	// Stop Agent to invalidate password
-	ShutdownAgent()
-
 	dirname := cfg.SystemDirectory()
 
 	_, err := os.Stat(dirname)
