@@ -7,6 +7,7 @@ message Record {
     string title = 3;
     string account = 4;
     string password = 5;
-    string url = 6;
-    string notes = 7;
+    repeated string tags = 6;
+    string url = 7;
+    string notes = 8;
 }

@@ -24,6 +24,7 @@ const (
 	TitleLabel    = "Title       : "
 	AccountLabel  = "Account     : "
 	PasswordLabel = "Password    : "
+	TagsLabel     = "Tags        : "
 	URLLabel      = "Url         : "
 	NotesLabel    = "Notes       : "
 

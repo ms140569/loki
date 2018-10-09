@@ -46,6 +46,7 @@ func TestMain(m *testing.M) {
 
 	flagBundle = config.ParseFlags()
 
+	// IMPORTANT: This is the key for the empty "" password just hittig return:
 	key, err := hex.DecodeString("f54d6aba8329dea96d4b3daa8caaa05e06bd10c246a40d510d2feb3e73b620bb")
 
 	if err != nil {

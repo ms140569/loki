@@ -1,12 +1,12 @@
 package storage
 
 import (
-	"loki/config"
-	"loki/log"
 	"bufio"
 	"fmt"
 	"github.com/peterh/liner"
 	"io"
+	"loki/config"
+	"loki/log"
 	"os"
 	"strings"
 )
@@ -39,6 +39,13 @@ func (rec *Record) Edit(editNotes bool) error {
 		return aborted
 	}
 	rec.Password = editedValue
+
+	tagsString := strings.Join(rec.Tags, ", ")
+
+	if editedValue, err = line.PromptWithSuggestion(config.TagsLabel, tagsString, pos); err != nil {
+		return aborted
+	}
+	rec.Tags = tagsStringToArray(editedValue)
 
 	if editedValue, err = line.PromptWithSuggestion(config.URLLabel, rec.Url, pos); err != nil {
 		return aborted
@@ -100,6 +107,9 @@ func (rec *Record) Search(text string) bool {
 	if strings.Contains(strings.ToLower(rec.Password), text) {
 		return true
 	}
+	if strings.Contains(strings.ToLower(strings.Join(rec.Tags, ", ")), text) {
+		return true
+	}
 	if strings.Contains(strings.ToLower(rec.Url), text) {
 		return true
 	}
@@ -108,6 +118,21 @@ func (rec *Record) Search(text string) bool {
 	}
 
 	return false
+}
+
+// split Tags like: "wlan, web, imported, mobile" into array
+func tagsStringToArray(tagsString string) []string {
+	tags := strings.Split(tagsString, ",")
+	trimmedTags := make([]string, 0)
+
+	for _, tag := range tags {
+		trimmed := strings.TrimSpace(tag)
+		if len(trimmed) > 0 {
+			log.Debug("Adding: |%s|", trimmed)
+			trimmedTags = append(trimmedTags, trimmed)
+		}
+	}
+	return trimmedTags
 }
 
 // Ask prompts the user for the content of all fields in the record.
@@ -131,6 +156,14 @@ func Ask() (Record, error) {
 	if rec.Password, err = line.Prompt(config.PasswordLabel); err != nil {
 		return rec, err
 	}
+
+	var tagsString string
+
+	if tagsString, err = line.Prompt(config.TagsLabel); err != nil {
+		return rec, err
+	}
+
+	rec.Tags = tagsStringToArray(tagsString)
 
 	if rec.Url, err = line.Prompt(config.URLLabel); err != nil {
 		return rec, err

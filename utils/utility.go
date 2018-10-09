@@ -302,6 +302,12 @@ func PrefixedDisplayWithHighlighting(rec *pb.Record, spacing int, searchstring s
 		log.Info("%*s%s%s", spacing, "", config.PasswordLabel, p(rec.Password, searchstring))
 	}
 
+	if len(rec.Tags) > 0 {
+		// turn tags array into one string
+		tagsString := strings.Join(rec.Tags, ", ")
+		log.Info("%*s%s%s", spacing, "", config.TagsLabel, p(tagsString, searchstring))
+	}
+
 	if len(rec.Url) > 0 {
 		log.Info("%*s%s%s", spacing, "", config.URLLabel, p(rec.Url, searchstring))
 	}
