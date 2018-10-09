@@ -1,18 +1,20 @@
 package cmd
 
 import (
+	"encoding/csv"
+	"errors"
+	"fmt"
+	"io"
+	"io/ioutil"
 	"loki/config"
 	"loki/log"
 	"loki/record"
 	pb "loki/storage"
 	"loki/subcommand"
 	"loki/utils"
-	"encoding/csv"
-	"errors"
-	"io"
-	"io/ioutil"
 	"os"
 	"strings"
+	"time"
 )
 
 // Import lets you import Keepass CSV export files into the Loki store.
@@ -82,7 +84,14 @@ func Import(cfg config.Configuration, subcommand subcommand.Subcommand, args ...
 
 		filename := groupAndTitleToFilename(group, title)
 
-		records[filename] = pb.Record{Title: title, Account: username, Password: password, Url: url, Notes: notes}
+		// create one tags entry with the date of today to indicate this
+		// entry to be created by import
+		t := time.Now()
+		nowAsString := fmt.Sprintf("%d-%02d-%02d", t.Year(), t.Month(), t.Day())
+		tags := make([]string, 0)
+		tags = append(tags, "imported-"+nowAsString)
+
+		records[filename] = pb.Record{Title: title, Account: username, Password: password, Tags: tags, Url: url, Notes: notes}
 	}
 
 	cnt := len(records)
