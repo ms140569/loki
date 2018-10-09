@@ -58,6 +58,7 @@ stat: clean
 test: build
 	go test -count=1 -v loki/utils
 	go test -count=1 -v loki/cmd
+	go test -count=1 -v loki/crypto
 
 .PHONY: man
 man:
