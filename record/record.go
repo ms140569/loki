@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/golang/protobuf/proto"
 	"loki/config"
@@ -53,7 +54,7 @@ var engine = crypto.NewEngine()
 
 // ComputeInnerMd5 returns a hex-encoded string of the md5 hash of all fields for the provided record.
 func ComputeInnerMd5(rec pb.Record) string {
-	return utils.Hexdump(crypto.GetStringMD5(rec.Title + rec.Account + rec.Password + rec.Url + rec.Notes))
+	return utils.Hexdump(crypto.GetStringMD5(rec.Title + rec.Account + rec.Password + strings.Join(rec.Tags, ", ") + rec.Url + rec.Notes))
 }
 
 // WriteRecord saves the given record using the given key to the location given with path.
