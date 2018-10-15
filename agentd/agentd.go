@@ -38,6 +38,11 @@ func main() {
 		log.Fatal("Listen error: ", err)
 	}
 
+	// setting the correct permissions to the socket file
+	if err := os.Chmod(config.CommunicationFile, 0700); err != nil {
+		log.Fatal("Error setting filemode: ", err)
+	}
+
 	sigc := make(chan os.Signal, 1)
 	signal.Notify(sigc, os.Interrupt, syscall.SIGTERM)
 	go func(ln net.Listener, c chan os.Signal) {
