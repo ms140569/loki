@@ -1,10 +1,10 @@
 package utils
 
 import (
+	"errors"
 	"loki/config"
 	"loki/crypto"
 	"loki/log"
-	"errors"
 	"net"
 	"os"
 	"os/exec"
@@ -44,11 +44,14 @@ func GetMasterkeyWithAgent(twice bool, withAgent bool) ([]byte, error) {
 }
 
 func askAgent() ([]byte, error) {
-	if _, err := os.Stat(config.CommunicationFile); err != nil {
+
+	socketFile := config.GetSocketfilePath()
+
+	if _, err := os.Stat(socketFile); err != nil {
 		return []byte{}, errors.New("Socketfile not found")
 	}
 
-	c, err := net.Dial("unix", config.CommunicationFile)
+	c, err := net.Dial("unix", socketFile)
 
 	if err != nil {
 		return []byte{}, errors.New("Dial error")
@@ -79,11 +82,14 @@ func askAgent() ([]byte, error) {
 
 // ShutdownAgent stops the background agent by sending it a stop command on the unix domain socket.
 func ShutdownAgent() error {
-	if _, err := os.Stat(config.CommunicationFile); err != nil {
+
+	socketFile := config.GetSocketfilePath()
+
+	if _, err := os.Stat(socketFile); err != nil {
 		return err
 	}
 
-	c, err := net.Dial("unix", config.CommunicationFile)
+	c, err := net.Dial("unix", socketFile)
 
 	if err != nil {
 		return err
@@ -110,7 +116,7 @@ func SetupKeyAgent(key []byte) error {
 // key on stdin  to the daemon. In addition one can provide the binpath. This is used for testing
 // since the binarypath could not be derived from the main binary in this case.
 func SetupKeyAgentWithBinpath(key []byte, binpath string) error {
-	if _, err := os.Stat(config.CommunicationFile); err == nil {
+	if _, err := os.Stat(config.GetSocketfilePath()); err == nil {
 		log.Debug("Socketfile found, bail out.")
 		return nil
 	}

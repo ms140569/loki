@@ -17,7 +17,10 @@ var masterkey = make([]byte, config.KeyLength)
 
 func main() {
 	setupLogging()
-	log.Println("Starting key server")
+
+	socketFile := config.GetSocketfilePath()
+
+	log.Printf("Starting key server on file: %s\n", socketFile)
 
 	key, err := readSecretFromStdin()
 
@@ -25,21 +28,19 @@ func main() {
 		panic(err)
 	}
 
-	// log.Println("KEY: " + utils.Hexdump(key))
-
 	copy(masterkey, key)
 
-	if _, err := os.Stat(config.CommunicationFile); err == nil {
-		os.Remove(config.CommunicationFile)
+	if _, err := os.Stat(socketFile); err == nil {
+		os.Remove(socketFile)
 	}
 
-	ln, err := net.Listen("unix", config.CommunicationFile)
+	ln, err := net.Listen("unix", socketFile)
 	if err != nil {
 		log.Fatal("Listen error: ", err)
 	}
 
 	// setting the correct permissions to the socket file
-	if err := os.Chmod(config.CommunicationFile, 0700); err != nil {
+	if err := os.Chmod(socketFile, 0700); err != nil {
 		log.Fatal("Error setting filemode: ", err)
 	}
 
@@ -107,7 +108,7 @@ func keyServer(c net.Conn) {
 	} else if request == config.ShutdownMagic {
 		log.Println("Shutting down on request")
 		c.Close()
-		os.Remove(config.CommunicationFile)
+		os.Remove(config.GetSocketfilePath())
 		os.Exit(0)
 	} else {
 		log.Println("Bouncing request")

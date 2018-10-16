@@ -2,6 +2,7 @@ package config
 
 import (
 	"flag"
+	"fmt"
 	"gopkg.in/gcfg.v1"
 	"loki/log"
 	"os"
@@ -174,6 +175,10 @@ func (c *Configuration) GetMasterfilename() string {
 		return c.SystemDir + string(os.PathSeparator) + MasterFilename
 	}
 	return getSystemDirectory() + string(os.PathSeparator) + MasterFilename
+}
+
+func GetSocketfilePath() string {
+	return fmt.Sprintf(CommunicationFile, os.Getuid())
 }
 
 func getSystemDirectory() string {

@@ -11,7 +11,7 @@ const (
 	LokiBaseEnv       = "LOKI_BASE"
 	LokiEditorEnv     = "EDITOR"
 	LokiLoglevelEnv   = "LOKI_LOGLEVEL"
-	CommunicationFile = "/tmp/loki.sock"
+	CommunicationFile = "/tmp/loki-%d.sock"
 	ConfigTemplate    = "configfile.tmpl"
 	ConfigTemplateGit = "configfile-git.tmpl"
 	RequestMagic      = "req"
