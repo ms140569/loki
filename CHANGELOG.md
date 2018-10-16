@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.0] - 2018-10-16
+
+- key-agent improvements: Have individual socketfiles for each user. Protect key with memguard. Flag socketfile correcty.
+
 ## [1.1.1] - 2018-10-10
 
 - Fixing severe bug introduced with the new tags array.
