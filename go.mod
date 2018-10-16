@@ -2,6 +2,7 @@ module loki
 
 require (
 	github.com/atotto/clipboard v0.1.0
+	github.com/awnumar/memguard v0.15.0
 	github.com/fatih/color v1.7.0
 	github.com/golang/protobuf v1.2.0
 	github.com/mattn/go-colorable v0.0.9 // indirect

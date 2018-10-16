@@ -4,16 +4,16 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"github.com/awnumar/memguard"
 	"log"
+	"loki/config"
 	"net"
 	"os"
 	"os/signal"
 	"syscall"
-
-	"loki/config"
 )
 
-var masterkey = make([]byte, config.KeyLength)
+var masterkey *memguard.LockedBuffer
 
 func main() {
 	setupLogging()
@@ -28,7 +28,11 @@ func main() {
 		panic(err)
 	}
 
-	copy(masterkey, key)
+	masterkey, err = memguard.NewMutableFromBytes(key)
+
+	if err != nil {
+		panic(err)
+	}
 
 	if _, err := os.Stat(socketFile); err == nil {
 		os.Remove(socketFile)
@@ -103,8 +107,7 @@ func keyServer(c net.Conn) {
 	log.Println("Server got:", request)
 
 	if request == config.RequestMagic {
-		// log.Println("Writing key: " + utils.Hexdump(masterkey))
-		c.Write(masterkey)
+		c.Write(masterkey.Buffer())
 	} else if request == config.ShutdownMagic {
 		log.Println("Shutting down on request")
 		c.Close()

@@ -1,5 +1,7 @@
 github.com/atotto/clipboard v0.1.0 h1:pw3q0vqdkRc2qob0PLEZo3NFSQehzW2dgSdbMI75kEs=
 github.com/atotto/clipboard v0.1.0/go.mod h1:ZY9tmq7sm5xIbd9bOK4onWV4S6X0u6GY7Vn0Yu86PYI=
+github.com/awnumar/memguard v0.15.0 h1:nuC0P7jZ/0dwJsjPEMpPRQBIcAK05qxP7S1mhYdmK9E=
+github.com/awnumar/memguard v0.15.0/go.mod h1:77EUD6uwfgcd6zTmn++i5ujEFviGRQfE8ELbDJO1rpA=
 github.com/fatih/color v1.7.0 h1:DkWD4oS2D8LGGgTQ6IvwJJXSL5Vp2ffcQg58nFV38Ys=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
 github.com/golang/protobuf v1.2.0 h1:P3YflyNX/ehuJFLhxviNdFxQPkGK5cDcApsge1SqnvM=
