@@ -1,3 +1,6 @@
+# Repository moved. 
+New location: https://codeberg.org/schmidtm/loki
+
 # Loki Password Manager
 
 **Introduction**
